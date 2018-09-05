@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html,body{
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+        body{
+            background: url("img/bg1.png");
+        }
+        .login-wrap{
+            position: absolute;
+            width: 340px;
+            height: 350px;
+            left: 50%;
+            top:50%;
+            margin-left: -170px;
+            margin-top: -175px;
+            padding: 15px;
+            box-sizing: border-box;
+            border-radius: 4px;
+            background: white;
+            box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+        }
+        .login-content{
+            position: relative;
+        }
+        .login-content .title{
+            font-size: 15px;
+            text-align: center;
+            text-transform: uppercase;
+            color: #2C3E50;
+            margin-bottom:20px;
+        }
+        .login-content input{
+            width: 90%;
+            height: 40px;
+            display: block;
+            margin: auto auto;
+            padding-left: 15px;
+            box-sizing: border-box;
+            border:1px solid #ccc;
+            border-radius: 3px;
+            -webkit-appearance: none;
+            outline: 0;
+        }
+        .login-content .error-div{
+            font-size: 12px;
+            height:30px;
+            line-height: 30px;
+            width: 90%;
+            padding-left: 15px;
+            box-sizing: border-box;
+            color: crimson;
+        }
+        .login-content .error-div label{
+            line-height: 15px;
+        }
+        .login-content input:hover{
+            border-color: #3bb4f2;
+        }
+        .login-content .loginBtn{
+            color:white ;
+            background: #27AE60;
+        }
+        .login-content .loginBtn:hover{
+            opacity: 0.9;
+        }
+        .login-content .footer{
+            width: 90%;
+            margin: auto auto;
+            text-align: right;
+            font-size: 12px;
+            margin-top: 15px;
+        }
+        .login-content .footer a:hover{
+            color: #3bb4f2;
+        }
+    </style>
+</head>
+<body>
+<div class="login-wrap">
+    <div class="login-content">
+        <h2 class="title">登录</h2>
+        <form method="post" onsubmit="return false;">
+            <input type="text" placeholder="手机号/邮箱">
+            <div class="error-div"><label></label></div>
+            <input type="password" placeholder="密码" autocomplete="off">
+            <div class="error-div"><label></label></div>
+
+            <input class="loginBtn" type="submit" value="登录">
+        </form>
+        <div class="footer"><a href="#">还没有账号？前往注册</a></div>
+    </div>
+</div>
+<script src="js/jsencrypt.min.js"></script>
+</body>
+</html>
