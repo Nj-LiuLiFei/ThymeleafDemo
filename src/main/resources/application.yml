@@ -8,10 +8,13 @@ spring:
     mode: HTML
     encoding: UTF-8
     servlet:
-      content-type: text/html
+      content-type: text/html;charset=UTF-8
     cache: false
     prefix: classpath:/templates/
   http:
     encoding:
       charset: UTF-8
       enabled: true
+      force: true
+  messages:
+    encoding: UTF-8

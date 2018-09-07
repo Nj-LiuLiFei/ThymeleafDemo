@@ -193,3 +193,75 @@ ul{
     from {height: 0px;}
     to {height: auto;}
 }
+
+
+/*  结构树样式 */
+.ztree{
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Chrome/Safari/Opera */
+    -khtml-user-select: none; /* Konqueror */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently not supported by any browser */
+}
+.ztree li{
+    padding: 0px;
+    margin: 0px;
+}
+.ztree a{
+    display: inline-block;
+    line-height: 24px;
+    height: 24px;
+    white-space: nowrap;
+    padding:0px 5px 0px 0px;
+    transition: background-color .15s,box-shadow .15s;
+    cursor: pointer;
+    text-decoration: none!important;
+    color: #333;
+    font-size: 16px;
+    box-sizing:unset;
+}
+.ztree a:hover{
+    background: #e7f4f9;
+    color: #333!important;
+}
+.ztree li{
+    background: url("/img/32px.png")  -292px -4px repeat-y;
+}
+.ztree li.li-last{
+    background: 0 0;
+}
+.ztree .ztree-icon{
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    display: inline-block;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+    vertical-align: top;
+    text-align: center;
+}
+.ztree .ztree-icon.ztree-icon-default{
+    background: url("/img/32px.png");
+}
+.ztree .ztree-icon.ztree-icon-none{
+    background-position: -68px -4px;
+}
+.ztree .ztree-icon.ztree-icon-open{
+    background-position: -100px -4px;
+    cursor: pointer;
+}
+.ztree .ztree-icon.ztree-icon-close{
+    background-position: -132px -4px;
+    cursor: pointer;
+}
+.ztree .ztree-icon.ztree-icon-checkbox{
+    background-position: -164px -4px;
+}
+.ztree li li{
+    margin-left: 24px;
+}

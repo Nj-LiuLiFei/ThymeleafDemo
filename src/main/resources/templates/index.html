@@ -2,11 +2,12 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>任务调度系统</title>
-    <link rel="stylesheet" th:href="@{css/base.css}">
+    <title>后台管理系统</title>
+    <link rel="stylesheet" th:href="@{css/l-ui.css}">
     <link rel="stylesheet" th:href="@{css/index.css}">
     <link rel="stylesheet" th:href="@{css/font-awesome.min.css}">
     <link rel="stylesheet" th:href="@{css/bootstrap.min.css}">
+    <script th:src="@{service/api/getAuth}"></script>
 </head>
 <body>
 <header id="header-wrapper" th:replace="layout/header :: layout_header"></header>
@@ -19,14 +20,158 @@
     </nav>
     <article id="main">
         <div class="row">
-            <div class="col-md-12"></div>
+            <div class="col-md-12">
+                <ul class="ztree" id="ztreeDemo"></ul>
+            </div>
         </div>
     </article>
 </section>
-
+<script th:src="@{js/l-ui.js}"></script>
 <script th:src="@{js/layout.js}"></script>
 <script>
+    var tree = initTreePlugIn({
+        "id":"ztreeDemo",
+        "data":[
+            {
+                "id":1,
+                "name":"团队工作时间管理",
+                "children":[
+                    {
+                        "id":1,
+                        "name":"团队工作时间管理",
+                        "children":[
 
+                        ],
+                    },
+                    {
+                        "id":1,
+                        "name":"团队工作时间管理",
+                        "children":[
+
+                        ],
+                    },
+                    {
+                        "id":1,
+                        "name":"团队工作时间管理",
+                        "children":[
+
+                        ],
+                    },
+                    {
+                        "id":1,
+                        "name":"团队工作时间管理",
+                        "children":[
+
+                        ],
+                    },
+                    {
+                        "id":1,
+                        "name":"团队工作时间管理",
+                        "children":[
+
+                        ],
+                    },
+                    {
+                        "id":1,
+                        "name":"团队工作时间管理",
+                        "children":[
+                            {
+                                "id":1,
+                                "name":"团队工作时间管理",
+                                "children":[
+                                    {
+                                        "id":1,
+                                        "name":"团队工作时间管理",
+                                        "children":[
+
+                                        ],
+                                    },
+                                ],
+                            }
+                        ],
+                    }
+                ],
+            },
+            {
+                "id":1,
+                "name":"团队工作时间管理",
+                "children":[
+                    {
+                        "id":1,
+                        "name":"团队工作时间管理",
+                        "children":[
+
+                        ],
+                    },
+                    {
+                        "id":1,
+                        "name":"团队工作时间管理",
+                        "children":[
+
+                        ],
+                    },
+                    {
+                        "id":1,
+                        "name":"团队工作时间管理",
+                        "children":[
+
+                        ],
+                    }
+                ],
+            },
+            {
+                "id":1,
+                "name":"团队工作时间管理",
+                "children":[
+                    {
+                        "id":1,
+                        "name":"团队工作时间管理",
+                        "children":[
+
+                        ],
+                    },
+                    {
+                        "id":1,
+                        "name":"团队工作时间管理",
+                        "children":[
+
+                        ],
+                    },
+                    {
+                        "id":1,
+                        "name":"团队工作时间管理",
+                        "children":[
+
+                        ],
+                    },
+                    {
+                        "id":1,
+                        "name":"团队工作时间管理",
+                        "children":[
+
+                        ],
+                    },
+                    {
+                        "id":1,
+                        "name":"团队工作时间管理",
+                        "children":[
+
+                        ],
+                    },
+                    {
+                        "id":1,
+                        "name":"团队工作时间管理",
+                        "children":[
+
+                        ],
+                    }
+                ],
+            }
+        ],
+        "callback":[
+
+        ]
+    });
 </script>
 </body>
 </html>
