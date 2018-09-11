@@ -16,7 +16,7 @@ public class AuthorizationController {
 
     @GetMapping("/getAuth")
     public String getAuth(){
-        return "var auth = \"liulifei\";alert(\"你好呀\");";
+        return "var auth = \"liulifei\";";
 
     }
 }

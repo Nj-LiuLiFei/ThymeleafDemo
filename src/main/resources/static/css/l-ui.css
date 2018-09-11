@@ -193,8 +193,10 @@ ul{
     from {height: 0px;}
     to {height: auto;}
 }
-
-
+/*  公用颜色值 */
+.lui-color-warning{
+    color: #F1C40F;
+}
 /*  结构树样式 */
 .ztree{
     list-style: none;

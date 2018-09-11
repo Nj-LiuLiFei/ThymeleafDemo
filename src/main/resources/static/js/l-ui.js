@@ -1,7 +1,16 @@
 ;"use strict";
+/* 公用方法 */
+;(function (window) {
+    var DomOperate={
+      c:function (t) {
+          return document.createElement(t);
+      }
+    };
+    window.LDom=DomOperate;
+})(window)
 
 /* 结构树插件 */
-(function (window) {
+;(function (window) {
     function initTree(cof) {
         var statrtTime = new Date().getTime();
         this.ulNode = document.getElementById(cof.id);
@@ -12,6 +21,14 @@
         return "";
     };
     var pt=initTree.prototype;
+    pt.renderLiNode=function(d){
+        var li=LDom.c("li"),i0=LDom.c("i"),a=LDom.c("a"),i1=LDom.c("i"),
+            i2=LDom.c("i"),span=LDom.c("span"),ul=LDom.c("ul");
+        i0.className = "ztree-icon ztree-icon-default ztree-icon-none";
+        i1.className = "ztree-icon ztree-icon-default ztree-icon-checkbox";
+        i2.className = "ztree-icon fa fa-folder";
+        span.innerHTML = d.name;
+    };
     pt.renderNode=function(c,e){
         var _ = this;
         var data = c == undefined?_.data:c,
@@ -24,16 +41,20 @@
                 i2 = document.createElement("i"),
                 span = document.createElement("span"),
                 ul = document.createElement("ul");
-            i0.className = "ztree-icon ztree-icon-default ztree-icon-none";
+
             i1.className = "ztree-icon  ztree-icon-default ztree-icon-checkbox";
-            i2.className = "ztree-icon fa fa-folder";
+            //i2.className = "ztree-icon fa fa-folder";
             span.innerHTML = data[i].name;
             if(i == data.length-1){
                 li.className = "li-last";
             }
-            if(data[i].children.length > 0) {
+            if(data[i].children == undefined || data[i].children == null ||data[i].children.length > 0) {
                 i0.className = "ztree-icon ztree-icon-default ztree-icon-close";
+                i2.className = "ztree-icon fa fa-folder-open lui-color-warning";
                 _.renderNode(data[i].children,ul);
+            }else {
+                i0.className = "ztree-icon ztree-icon-default ztree-icon-none";
+                i2.className = "ztree-icon fa fa-folder lui-color-warning";
             }
             a.appendChild(i1),a.appendChild(i2),a.appendChild(span),li.appendChild(i0),li.appendChild(a),li.appendChild(ul);
             w.appendChild(li);
@@ -73,5 +94,5 @@
     }else {
         console.error("结构树插件加载失败！window.initTreePlugIn 方法重复");
     }
-    var ztreeList = document.getElementsByClassName("");
+    //var ztreeList = document.getElementsByClassName("");
 })(window);
