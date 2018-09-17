@@ -267,3 +267,44 @@ ul{
 .ztree li li{
     margin-left: 24px;
 }
+
+/*  数据表格  */
+.dataTable-wrap{
+    border: 1px solid #e6e6e6;
+}
+.dataTable-wrap table{
+    width: 100%;
+
+}
+.dataTable-wrap .dataTable-thead{
+    margin-right: -1px;
+}
+.dataTable-wrap th{
+    cursor: pointer;
+    border-top: none!important;
+    border-left: none!important;
+    border-bottom: none!important;
+    background: #f2f2f2;
+}
+.dataTable-wrap th,
+.dataTable-wrap td{
+    height: 38px;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 20px;
+    color: #666;
+    font-size: 14px;
+    font-weight: 400;
+    width: auto;
+}
+.dataTable-wrap .dataTable-thead th,
+.dataTable-wrap .dataTable-tbody td{
+    border: 1px solid #e6e6e6;
+}
+.dataTable-wrap .dataTable-tbody th,
+.dataTable-wrap .dataTable-tbody th div{
+    height: 0px;
+    overflow: hidden;
+    padding: 0px;
+}

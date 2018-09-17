@@ -96,3 +96,54 @@
     }
     //var ztreeList = document.getElementsByClassName("");
 })(window);
+
+/* 数据表格插件 */
+;(function (window) {
+    function dataTable(cof) {
+        var statrtTime = new Date().getTime();
+        var table=document.getElementById(cof.id);
+        if(table == undefined||table == null) {
+            return false;
+        }
+
+        renderTable.th(renderTable.wrap(table),cof.column);
+        var column=cof.column;
+        //this.a(th,tb,cof.column);
+        console.log(cof.id+"数据表格树初始化："+(new Date().getTime()-statrtTime)+"ms");
+    };
+    var tp=dataTable.prototype;
+    tp.a=function(){
+        var t=document.createElement("table");
+    };
+    var renderTable={
+        "wrap":function (table) {
+            var tp=table.parentNode,tc=table.cloneNode(),tw=document.createElement("div"),
+                th=document.createElement("div"),tb=document.createElement("div"),tf=document.createElement("div");
+            tw.className="dataTable-wrap",th.className="dataTable-thead",
+                tb.className="dataTable-tbody",tf.className="dataTable-tfoot";
+            table.remove(),tb.appendChild(tc),tw.appendChild(th),tw.appendChild(tb),tw.appendChild(tf),tp.appendChild(tw);
+            return [this.thead(th),this.tbody(tc)];
+        },
+        "thead":function (th) {
+            var table = document.createElement("table"),
+                thead=document.createElement("thead"),tr = document.createElement("tr");
+            return thead.appendChild(tr),table.appendChild(thead),th.appendChild(table),tr;
+        },
+        "tbody":function (tb) {
+            var thead = document.createElement("thead"),tr = document.createElement("tr"),
+                tbody=document.createElement("tbody");
+            return thead.appendChild(tr),tb.appendChild(thead),tb.appendChild(tbody),tr;
+        },
+        "th":function (w,column) {
+            for(var i=0;i<column.length;i++) {
+                var th=document.createElement("th"),th2=th.cloneNode(),div=document.createElement("div");
+                th.innerHTML=div.innerHTML=column[i].title;
+                th2.appendChild(div);
+                w[0].appendChild(th),w[1].appendChild(th2);
+            }
+        },
+    };
+    window.initDataTablePlugIn=function (cof) {
+        return new dataTable(cof);
+    };
+})(window);

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>后台管理系统</title>
+    <link rel="stylesheet" th:href="@{css/l-ui.css}">
+    <link rel="stylesheet" th:href="@{css/index.css}">
+    <link rel="stylesheet" th:href="@{css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{css/bootstrap.min.css}">
+    <script th:src="@{service/api/getAuth}"></script>
+</head>
+<body>
+<header id="header-wrapper" th:replace="layout/header :: layout_header"></header>
+<aside id="aside-wrapper" th:replace="layout/aside :: layout_aside"></aside>
+
+<section id="section-wrapper">
+    <nav class="section-nav-box">
+        <i class="fa fa-home"></i><a href="#" class="maincolor">首页</a>
+        <i class="fa fa-angle-right"></i><a>数据表格</a>
+    </nav>
+    <article id="main">
+        <div class="row">
+            <div class="col-md-12">
+                <table id="dataTableDemo"></table>
+            </div>
+        </div>
+    </article>
+</section>
+<script th:src="@{js/l-ui.js}"></script>
+<script th:src="@{js/layout.js}"></script>
+<script>
+    initDataTablePlugIn({
+        "id":"dataTableDemo",
+        "column":[
+            {"data":"film_id","title":"film_id"},
+            {"data":"title","title":"title"},
+            {"data":"description","title":"description"},
+            {"data":"release_year","title":"release_year"},
+            {"data":"language_id","title":"language_id"},
+            {"data":"original_language_id","title":"original_language_id"},
+            {"data":"rental_duration","title":"rental_duration"},
+            {"data":"rental_rate","title":"rental_rate"},
+            {"data":"length","title":"length"},
+            {"data":"replacement_cost","title":"replacement_cost"},
+            {"data":"rating","title":"rating"},
+            {"data":"special_features","title":"special_features"},
+            {"data":"last_update","title":"last_update"},
+        ],
+    });
+</script>
+</body>
+</html>

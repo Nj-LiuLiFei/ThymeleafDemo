@@ -14,4 +14,8 @@ public class IndexController {
     public String index(){
         return "index";
     }
+    @RequestMapping(value = "/dataTable")
+    public String dataTable(){
+        return "dataTable";
+    }
 }
