@@ -31,7 +31,9 @@
 <script>
     initDataTablePlugIn({
         "id":"dataTableDemo",
+        "height":"350px",
         "column":[
+            //{"data":"_DATA_TABLE_NUMBER","title":"序号","hide":true},
             {"data":"film_id","title":"film_id"},
             {"data":"title","title":"title"},
             {"data":"description","title":"description"},
@@ -46,6 +48,10 @@
             {"data":"special_features","title":"special_features"},
             {"data":"last_update","title":"last_update"},
         ],
+        "fixedLeft":1,
+        "fixedRight":1,
+        "page":true,
+        "url":"/film/pageListByQuery"
     });
 </script>
 </body>

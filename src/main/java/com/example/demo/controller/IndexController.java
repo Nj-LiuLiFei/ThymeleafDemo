@@ -18,4 +18,8 @@ public class IndexController {
     public String dataTable(){
         return "dataTable";
     }
+    @RequestMapping(value = "/page")
+    public String page(){
+        return "page";
+    }
 }

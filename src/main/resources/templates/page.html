@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <title>后台管理系统</title>
+    <link rel="stylesheet" th:href="@{css/l-ui.css}">
+    <link rel="stylesheet" th:href="@{css/index.css}">
+    <link rel="stylesheet" th:href="@{css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{css/bootstrap.min.css}">
+    <script th:src="@{service/api/getAuth}"></script>
+</head>
+<body>
+<header id="header-wrapper" th:replace="layout/header :: layout_header"></header>
+<aside id="aside-wrapper" th:replace="layout/aside :: layout_aside"></aside>
+
+<section id="section-wrapper">
+    <nav class="section-nav-box">
+        <i class="fa fa-home"></i><a href="#" class="maincolor">首页</a>
+        <i class="fa fa-angle-right"></i><a>数据表格</a>
+    </nav>
+    <article id="main">
+        <div class="row">
+            <div class="col-md-12">
+                <ul id="pageDemo" class="l-ui-page"></ul>
+            </div>
+        </div>
+    </article>
+</section>
+<script th:src="@{js/l-ui.js}"></script>
+<script th:src="@{js/layout.js}"></script>
+<script>
+    initPagePlug({
+        "id":"pageDemo",
+        "currentPage":1,
+        "pages":10,
+        "callback":function () {
+            console.log();
+        },
+    });
+</script>
+</body>
+</html>
