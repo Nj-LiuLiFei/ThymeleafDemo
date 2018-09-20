@@ -30,14 +30,18 @@
 <script th:src="@{js/l-ui.js}"></script>
 <script th:src="@{js/layout.js}"></script>
 <script>
-    initPagePlug({
-        "id":"pageDemo",
-        "currentPage":1,
-        "pages":10,
-        "callback":function () {
-            console.log();
-        },
-    });
+    function initPage(currentPage) {
+        initPagePlug({
+            "id":"pageDemo",
+            "currentPage":currentPage,
+            "pages":17,
+            "showPage":4,
+            "callback":function (page,evt) {
+                initPage(page);
+            },
+        });
+    }
+    initPage(0);
 </script>
 </body>
 </html>

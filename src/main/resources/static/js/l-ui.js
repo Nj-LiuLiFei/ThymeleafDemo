@@ -101,6 +101,9 @@
 ;(function (window) {
     var Ajax={
         "GET":function (url,para,fn) {
+            if(para!=undefined&&para!=null&&para!=""){
+                url=url+"?"+para;
+            }
             // XMLHttpRequest对象用于在后台与服务器交换数据
             var xhr = new XMLHttpRequest();
             xhr.open('GET', url+para, true);
@@ -142,6 +145,7 @@
         var statrtTime = new Date().getTime();
         var tableInfo={
             "id":cof.id,
+            "formId":cof.formId,
             "node":"",
             "thead":"",
             "tbody":"",
@@ -163,14 +167,19 @@
             "pages":0,
             "recordsTotal":0,
         };
-
-        var api={};
-        api.reload=function () {
+        var prApi={};
+        prApi.request=function () {
+            var para = document.getElementById(tableInfo.formId);
             Ajax[tableInfo.method](tableInfo.url,"",function (readyState,responseText,_xhr) {
                 if(readyState == 200){
                     api.renderData(JSON.parse(responseText));
                 }
             });
+        };
+        var api={};
+        api.reload=function () {
+            pageInfo.start=0;
+            prApi.request();
         };
         api.renderData=function (data) {
             console.log(data);
@@ -253,8 +262,79 @@
 /* 分页插件 */
 ;(function (window) {
     var  pagePlug=function (cof) {
-        var node=document.getElementById(cof.id),w=document.createDocumentFragment();
-        //node.innerText="";
+        var node=document.getElementById(cof.id),html="";
+        var showPage = cof.showPage,index = Math.floor(cof.showPage/2);
+        var pageArray=[];
+
+        if(cof.pages == 0) {
+            html="<li class='l-ui-page-disabled'>上一页</li><li class='l-ui-page-disabled'>下一页</li>";
+        }else {
+            if(cof.currentPage>cof.pages-1){
+                cof.currentPage=cof.pages-1;
+            }
+            for (var i=0;i<showPage;i++){
+                pageArray.push(-1);
+            }
+            if(cof.currentPage !=0){
+                html="<li class='l-ui-page-item' data-page='"+(cof.currentPage-1)+"'>上一页</li>";
+            }else {
+                html="<li class='l-ui-page-disabled'>上一页</li>";
+            }
+            if(cof.currentPage-index<0){
+                for (var i=0;i<showPage;i++){
+                    pageArray[i]=i;
+                }
+            }else if(cof.currentPage+index>=cof.pages){
+                var t = cof.pages-1;
+                for (var i=showPage-1;i>=0;i--){
+                    pageArray[i]=t--;
+                }
+            }else {
+                for (var i=0;i<showPage;i++){
+                    pageArray[i]=cof.currentPage-index+i;
+                }
+            }
+            console.log(pageArray);
+            if(pageArray[0]-1>=0){
+                html+="<li data-page='0'>1</li>";
+                if(pageArray[0]-1>0) {
+                    html+= "<li>...</li>";
+                }
+            }
+            for (var i=0;i<pageArray.length;i++){
+                if(pageArray[i]>=0 && pageArray[i]<cof.pages){
+                    html+="<li data-page='"+pageArray[i]+"'>"+(pageArray[i]+1)+"</li>";
+                }
+            }
+            if(pageArray[showPage-1]<=cof.pages-1 && pageArray[showPage-1]!=cof.pages-1){
+                if(pageArray[showPage-1]+1<cof.pages-1){
+                    html+="<li>...</li>";
+                }
+                html+="<li data-page='"+(cof.pages-1)+"'>"+cof.pages+"</li>";
+            }
+            if((cof.currentPage+1) == cof.pages){
+                html+="<li class='l-ui-page-disabled'>下一页</li>";
+            }else {
+                html+="<li class='l-ui-page-item' data-page='"+(cof.currentPage+1)+"'>下一页</li>";
+            }
+        }
+
+
+        node.innerHTML=html;
+        var li = node.children;
+        for(var i=0;i<li.length;i++){
+            console.log();
+            if(li[i].dataset["page"]!=undefined){
+                if(cof.currentPage == li[i].dataset["page"]){
+                    li[i].className="l-ui-page-active";
+                }else {
+                    li[i].className="l-ui-page-item";
+                }
+                li[i].addEventListener("click",function (evt) {
+                    cof.callback(parseInt(this.dataset["page"]),evt);
+                });
+            }
+        }
     };
     window.initPagePlug=pagePlug;
 })(window);

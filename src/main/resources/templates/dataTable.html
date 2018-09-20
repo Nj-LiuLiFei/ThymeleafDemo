@@ -19,6 +19,66 @@
         <i class="fa fa-angle-right"></i><a>数据表格</a>
     </nav>
     <article id="main">
+        <form id="filmForm" onsubmit="return false;">
+            <div class="row">
+                <div class="col-md-4 l-ui-form-group">
+                    <div class="col-md-4">
+                        <label class="">Film_Id</label>
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text"/>
+                    </div>
+                </div>
+                <div class="col-md-4 l-ui-form-group">
+                    <div class="col-md-4">
+                        <label class="">Rental_Duration</label>
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text"/>
+                    </div>
+                </div>
+                <div class="col-md-4 l-ui-form-group">
+                    <div class="col-md-4">
+                        <label class="">Rental_Rate</label>
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 l-ui-form-group">
+                    <div class="col-md-4">
+                        <label class="">Length</label>
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text"/>
+                    </div>
+                </div>
+                <div class="col-md-4 l-ui-form-group">
+                    <div class="col-md-4">
+                        <label class="">Replacement_Cost</label>
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text"/>
+                    </div>
+                </div>
+                <div class="col-md-4 l-ui-form-group">
+                    <div class="col-md-4">
+                        <label class="">Rating</label>
+                    </div>
+                    <div class="col-md-8">
+                        <input type="text"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row text-center" style="margin-bottom: 20px;">
+                <div class="col-md-12">
+                    <button type="reset" class="l-ui-btn l-ui-btn-primary"><i class="fa fa-refresh"></i>清空</button>
+                    <button type="button" class="l-ui-btn l-ui-btn-success"><i class="fa fa-search"></i>查询</button>
+                </div>
+            </div>
+        </form>
         <div class="row">
             <div class="col-md-12">
                 <table id="dataTableDemo"></table>
@@ -31,6 +91,7 @@
 <script>
     initDataTablePlugIn({
         "id":"dataTableDemo",
+        "formId":"filmForm",
         "height":"350px",
         "column":[
             //{"data":"_DATA_TABLE_NUMBER","title":"序号","hide":true},
