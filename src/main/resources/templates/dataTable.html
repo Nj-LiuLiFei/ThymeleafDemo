@@ -26,7 +26,7 @@
                         <label class="">Film_Id</label>
                     </div>
                     <div class="col-md-8">
-                        <input type="text"/>
+                        <input type="text" name="film_id"/>
                     </div>
                 </div>
                 <div class="col-md-4 l-ui-form-group">
@@ -34,7 +34,7 @@
                         <label class="">Rental_Duration</label>
                     </div>
                     <div class="col-md-8">
-                        <input type="text"/>
+                        <input type="text" name="rental_duration"/>
                     </div>
                 </div>
                 <div class="col-md-4 l-ui-form-group">
@@ -42,7 +42,7 @@
                         <label class="">Rental_Rate</label>
                     </div>
                     <div class="col-md-8">
-                        <input type="text"/>
+                        <input type="text" name="rental_rate"/>
                     </div>
                 </div>
             </div>
@@ -52,7 +52,7 @@
                         <label class="">Length</label>
                     </div>
                     <div class="col-md-8">
-                        <input type="text"/>
+                        <input type="text" name="length"/>
                     </div>
                 </div>
                 <div class="col-md-4 l-ui-form-group">
@@ -60,7 +60,7 @@
                         <label class="">Replacement_Cost</label>
                     </div>
                     <div class="col-md-8">
-                        <input type="text"/>
+                        <input type="text" name="replacement_cost"/>
                     </div>
                 </div>
                 <div class="col-md-4 l-ui-form-group">
@@ -68,14 +68,14 @@
                         <label class="">Rating</label>
                     </div>
                     <div class="col-md-8">
-                        <input type="text"/>
+                        <input type="text" name="rating"/>
                     </div>
                 </div>
             </div>
             <div class="row text-center" style="margin-bottom: 20px;">
                 <div class="col-md-12">
                     <button type="reset" class="l-ui-btn l-ui-btn-primary"><i class="fa fa-refresh"></i>清空</button>
-                    <button type="button" class="l-ui-btn l-ui-btn-success"><i class="fa fa-search"></i>查询</button>
+                    <button type="button" class="l-ui-btn l-ui-btn-success" onclick="filmFormQueryFn();"><i class="fa fa-search"></i>查询</button>
                 </div>
             </div>
         </form>
@@ -112,8 +112,15 @@
         "fixedLeft":1,
         "fixedRight":1,
         "page":true,
-        "url":"/film/pageListByQuery"
+        "url":"/film/pageListByQuery",
+        "queryParaCallBack":function () {
+
+        },
     });
+
+    function filmFormQueryFn() {
+        dataTable_Api.api("dataTableDemo").Api().reload();
+    }
 </script>
 </body>
 </html>

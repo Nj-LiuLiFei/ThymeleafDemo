@@ -97,6 +97,24 @@
     //var ztreeList = document.getElementsByClassName("");
 })(window);
 
+/* 表单序列号 */
+;(function (window) {
+    var lserialize=function (n) {
+        var f= document.getElementById(n),w,paraArray=[],
+        s=["INPUT"];
+        for (var i=0;i<s.length;i++){
+            w=f.getElementsByTagName(s[i]);
+            for (var j=0;j<w.length;j++){
+                console.log(w[j]);
+                if(w[j].getAttribute("name")){
+                    paraArray.push(encodeURIComponent(w[j].getAttribute("name"))+"="+encodeURIComponent(w[j].value));
+                }
+            }
+        }
+        return paraArray.join("&");
+    };
+    window.lserialize=lserialize;
+})(window);
 /* 数据表格插件 */
 ;(function (window) {
     var Ajax={
@@ -106,7 +124,7 @@
             }
             // XMLHttpRequest对象用于在后台与服务器交换数据
             var xhr = new XMLHttpRequest();
-            xhr.open('GET', url+para, true);
+            xhr.open('GET', url, true);
             xhr.onreadystatechange = function() {
                 if(xhr.readyState == 4){
                     fn(xhr.status,xhr.responseText,this);
@@ -151,6 +169,7 @@
             "tbody":"",
             "tfoot":"",
             "column":cof.column,
+            "showColumn":0,
             "data":"",
             "url":cof.url,
             "method":"GET",
@@ -169,39 +188,46 @@
         };
         var prApi={};
         prApi.request=function () {
-            var para = document.getElementById(tableInfo.formId);
-            Ajax[tableInfo.method](tableInfo.url,"",function (readyState,responseText,_xhr) {
+            var para = lserialize(tableInfo.formId);
+            para+="&start="+pageInfo.start+"&displayTotal="+pageInfo.displayTotal;
+            Ajax[tableInfo.method](tableInfo.url,para,function (readyState,responseText,_xhr) {
                 if(readyState == 200){
-                    api.renderData(JSON.parse(responseText));
+                    puApi.renderData(JSON.parse(responseText));
                 }
             });
         };
-        var api={};
-        api.reload=function () {
+        var puApi={};
+        puApi.reload=function () {
             pageInfo.start=0;
             prApi.request();
         };
-        api.renderData=function (data) {
+        puApi.renderData=function (data) {
             console.log(data);
             tableInfo.tbody.innerHTML="";
             var body = document.createDocumentFragment();
-            for (var i=0;i<data.length;i++){
-                var tr=document.createElement("tr");
-                for (var j=0;j<tableInfo.column.length;j++){
-                    var td=document.createElement("td");
-                    td.innerHTML=data[i][tableInfo.column[j].data];
-                    tr.appendChild(td);
+            if(data.length > 0){
+                for (var i=0;i<data.length;i++){
+                    var tr=document.createElement("tr");
+                    for (var j=0;j<tableInfo.column.length;j++){
+                        var td=document.createElement("td");
+                        td.innerHTML=data[i][tableInfo.column[j].data];
+                        tr.appendChild(td);
+                    }
+                    body.appendChild(tr);
                 }
-                body.appendChild(tr);
+                tableInfo.tbody.appendChild(body);
+            }else {
+                tableInfo.tbody.innerHTML="<td colspan='"+tableInfo.showColumn+"'>没有结果列表</td>";
             }
-            tableInfo.tbody.appendChild(body);
+
+
             dataTable_Api.draw(tableInfo.id);
         };
         renderTable.wrap(tableElement,tableInfo.id,cof.height),
             tableInfo.thead=document.getElementById(cof.id+"_dataTable_thead_table"),
             tableInfo.node=document.getElementById(cof.id),
             tableInfo.tbody=tableInfo.node.children[1];
-            renderTable.th(tableInfo.thead,tableInfo.node,tableInfo.column);
+            tableInfo.showColumn=renderTable.th(tableInfo.thead,tableInfo.node,tableInfo.column);
         window.addEventListener("resize",function (ev) {
             dataTable_Api.draw(tableInfo.id);
         });
@@ -210,11 +236,18 @@
         });
         console.log(cof.id+"数据表格树初始化："+(new Date().getTime()-statrtTime)+"ms");
         cof=null;
-        api.reload();
+        puApi.reload();
+        this.Api=function () {
+            return puApi;
+        };
+        window[tableInfo.id+"Object"]=this;
     };
     var tp=dataTable.prototype;
     tp.bindEvent=function(id){
 
+    };
+    tp.Api=function () {
+        return this.Api;
     };
     var renderTable={
         "wrap":function (table,id,h) {
@@ -222,19 +255,21 @@
             table.parentNode.innerHTML="<div class='dataTable-wrap'>" +
                 "<div class='dataTable-thead'>" +
                     "<table id="+id+"_dataTable_thead_table><thead><tr></tr></thead></table></div>" +
-                "<div class='dataTable-tbody' style='height: "+h+"'>"+table.outerHTML+"</div>" +
+                "<div class='dataTable-tbody' style='max-height: "+h+"'>"+table.outerHTML+"</div>" +
                 "<div class='dataTable-tfoot'></div>" +
                 "<div class='dataTable-tpage'></div>" +
                 "</div>";
         },
         "th":function (a,b,c) {
-            var th=a.children[0].children[0],tb=b.children[0].children[0];
+            var th=a.children[0].children[0],tb=b.children[0].children[0],t=0;
             for(var i=0;i<c.length;i++) {
                 var h=document.createElement("th"),h2=h.cloneNode(),div=document.createElement("div");
                 h.innerHTML=div.innerHTML=c[i].title;
                 h2.appendChild(div);
                 th.appendChild(h),tb.appendChild(h2);
+                t++;
             }
+            return t;
         },
     };
     var dataTable_Api={
@@ -251,6 +286,9 @@
             }else {
 
             }
+        },
+        "api":function (id) {
+            return window[id+"Object"];
         },
     };
     window.initDataTablePlugIn=function (cof) {

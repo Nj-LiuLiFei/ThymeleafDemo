@@ -1,6 +1,6 @@
-package com.example.demo.model;
+package com.example.demo.entity;
 
-public class Film {
+public class FilmEntity {
     int film_id;
     String title;
     String description;

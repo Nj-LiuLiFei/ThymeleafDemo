@@ -1,12 +1,11 @@
 package com.example.demo.mapper;
 
-import com.example.demo.model.Film;
+import com.example.demo.entity.FilmEntity;
 import org.springframework.stereotype.Repository;
 
-import java.io.File;
 import java.util.List;
 
 @Repository("filmMapper")
 public interface FilmMapper {
-    List<Film> pageListByQuery(Film film);
+    List<FilmEntity> pageListByQuery(FilmEntity film);
 }
