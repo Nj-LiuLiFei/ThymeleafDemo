@@ -1,7 +1,7 @@
 package com.example.demo.entity;
 
 public class FilmEntity {
-    int film_id;
+    Long film_id;
     String title;
     String description;
     String release_year;
@@ -14,11 +14,11 @@ public class FilmEntity {
     String rating;
     String special_features;
 
-    public int getFilm_id() {
+    public Long getFilm_id() {
         return film_id;
     }
 
-    public void setFilm_id(int film_id) {
+    public void setFilm_id(Long film_id) {
         this.film_id = film_id;
     }
 

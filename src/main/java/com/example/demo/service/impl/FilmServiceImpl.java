@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.common.Page;
 import com.example.demo.mapper.FilmMapper;
 import com.example.demo.entity.FilmEntity;
 import com.example.demo.service.FilmService;
@@ -17,7 +18,7 @@ public class FilmServiceImpl implements FilmService {
     private FilmMapper filmMapper;
 
     @Override
-    public List<FilmEntity> pageListByQuery(FilmEntity film) {
+    public Page<FilmEntity> pageListByQuery(FilmEntity film) {
         return filmMapper.pageListByQuery(film);
     }
 }

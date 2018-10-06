@@ -28,9 +28,9 @@ public class FilmController {
     public ResponseEntity pageListByQuery(FilmModel filmModel){
 
         FilmEntity filmEntity = new FilmEntity();
-        if(RegexUtils.positiveInteger(filmModel.getFilm_id())){
-            filmEntity.setFilm_id(NumberUtils.parseNumber(filmModel.getFilm_id(), Integer.class));
-        }
+        filmEntity.setFilm_id(filmModel.getFilm_id());
+        filmEntity.setReplacement_cost(filmModel.getReplacement_cost());
+        filmEntity.setRental_rate(filmModel.getRental_rate());
         if(RegexUtils.positiveInteger(filmModel.getRental_duration())){
             filmEntity.setRental_duration(NumberUtils.parseNumber(filmModel.getRental_duration(),Integer.class));
         }

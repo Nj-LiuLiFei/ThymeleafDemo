@@ -97,53 +97,44 @@
     //var ztreeList = document.getElementsByClassName("");
 })(window);
 
-/* 表单序列号 */
-;(function (window) {
-    var lserialize=function (n) {
-        var f= document.getElementById(n),w,paraArray=[],
-        s=["INPUT"];
-        for (var i=0;i<s.length;i++){
-            w=f.getElementsByTagName(s[i]);
-            for (var j=0;j<w.length;j++){
-                console.log(w[j]);
-                if(w[j].getAttribute("name")){
-                    paraArray.push(encodeURIComponent(w[j].getAttribute("name"))+"="+encodeURIComponent(w[j].value));
-                }
-            }
-        }
-        return paraArray.join("&");
-    };
-    window.lserialize=lserialize;
-})(window);
 /* 数据表格插件 */
 ;(function (window) {
     var Ajax={
-        "GET":function (url,para,fn) {
-            if(para!=undefined&&para!=null&&para!=""){
-                url=url+"?"+para;
+        "GET":function (url,para,type,_sFn,_eFn,_cFn) {
+            if(para!=undefined&&para!=null&&para!="") {
+                url = url + "?" + para;
             }
-            // XMLHttpRequest对象用于在后台与服务器交换数据
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', url, true);
-            xhr.onreadystatechange = function() {
-                if(xhr.readyState == 4){
-                    fn(xhr.status,xhr.responseText,this);
+            $.ajax({
+                url: url,
+                type: "GET",
+                contentType: "application/json",
+                success: function (data) {
+                    _sFn(data);
+                },
+                error:function (e) {
+                    _eFn(e);
+                },
+                complete:function (c) {
+                  _cFn(c);
                 }
-
-            };
-            xhr.send();
+            });
         },
-        "POST":function (url,para,fn) {
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", url, true);
-            // 添加http头，发送信息至服务器时内容编码类型
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function() {
-                if(xhr.readyState == 4){
-                    fn(xhr.status,xhr.responseText,this);
+        "POST":function (url,para,type,_sFn,_eFn,_cFn) {
+            $.ajax({
+                url: url,
+                type: "POST",
+                data:para,
+                contentType: "application/json",
+                success: function (data) {
+                    _sFn(data);
+                },
+                error:function (e) {
+                    _eFn(e);
+                },
+                complete:function (c) {
+                    _cFn(c);
                 }
-            };
-            xhr.send(para);
+            });
         },
     };
     function dataTable(cof) {
@@ -188,12 +179,14 @@
         };
         var prApi={};
         prApi.request=function () {
-            var para = lserialize(tableInfo.formId);
+            var para = $("#"+tableInfo.formId).serialize();
             para+="&start="+pageInfo.start+"&displayTotal="+pageInfo.displayTotal;
-            Ajax[tableInfo.method](tableInfo.url,para,function (readyState,responseText,_xhr) {
-                if(readyState == 200){
-                    puApi.renderData(JSON.parse(responseText));
-                }
+            Ajax[tableInfo.method](tableInfo.url,para,null,function (result) {
+                puApi.renderData(result);
+            },function (e) {
+
+            },function (c) {
+
             });
         };
         var puApi={};

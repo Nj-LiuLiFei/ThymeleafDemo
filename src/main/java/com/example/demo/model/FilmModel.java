@@ -1,18 +1,18 @@
 package com.example.demo.model;
 
 public class FilmModel extends  BasePageModel {
-    String film_id;
+    Long film_id;
     String rental_duration;
     String rental_rate;
     String length;
     String replacement_cost;
     String rating;
 
-    public String getFilm_id() {
+    public Long getFilm_id() {
         return film_id;
     }
 
-    public void setFilm_id(String film_id) {
+    public void setFilm_id(Long film_id) {
         this.film_id = film_id;
     }
 
