@@ -19,6 +19,7 @@ public class FilmServiceImpl implements FilmService {
 
     @Override
     public Page<FilmEntity> pageListByQuery(FilmEntity film) {
-        return filmMapper.pageListByQuery(film);
+        Page<FilmEntity> page = filmMapper.pageListByQuery(film);
+        return page;
     }
 }

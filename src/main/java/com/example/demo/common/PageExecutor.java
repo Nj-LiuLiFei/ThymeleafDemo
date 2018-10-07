@@ -47,7 +47,8 @@ public class PageExecutor implements Executor {
             //System.out.println("分页数据总数2："+metaObject.getValue("pageTotal"));
             int offset = rowBounds.getOffset();
             int pagesize = rowBounds.getLimit();
-            return new Page<E>(offset/pagesize + 1, pagesize, 1000, rows);
+            Page<E> page = (Page<E>) rows;
+            return page;
         }
         return rows;
     }
