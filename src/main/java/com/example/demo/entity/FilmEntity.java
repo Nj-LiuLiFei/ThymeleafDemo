@@ -1,18 +1,20 @@
 package com.example.demo.entity;
 
+
 public class FilmEntity {
     Long film_id;
     String title;
     String description;
     String release_year;
-    int language_id;
-    int original_language_id;
-    int rental_duration;
+    Long  language_id;
+    Long original_language_id;
+    Long rental_duration;
     String rental_rate;
-    int length;
+    Long length;
     String replacement_cost;
     String rating;
     String special_features;
+    String last_update;
 
     public Long getFilm_id() {
         return film_id;
@@ -46,27 +48,27 @@ public class FilmEntity {
         this.release_year = release_year;
     }
 
-    public int getLanguage_id() {
+    public Long getLanguage_id() {
         return language_id;
     }
 
-    public void setLanguage_id(int language_id) {
+    public void setLanguage_id(Long language_id) {
         this.language_id = language_id;
     }
 
-    public int getOriginal_language_id() {
+    public Long getOriginal_language_id() {
         return original_language_id;
     }
 
-    public void setOriginal_language_id(int original_language_id) {
+    public void setOriginal_language_id(Long original_language_id) {
         this.original_language_id = original_language_id;
     }
 
-    public int getRental_duration() {
+    public Long getRental_duration() {
         return rental_duration;
     }
 
-    public void setRental_duration(int rental_duration) {
+    public void setRental_duration(Long rental_duration) {
         this.rental_duration = rental_duration;
     }
 
@@ -78,11 +80,11 @@ public class FilmEntity {
         this.rental_rate = rental_rate;
     }
 
-    public int getLength() {
+    public Long getLength() {
         return length;
     }
 
-    public void setLength(int length) {
+    public void setLength(Long length) {
         this.length = length;
     }
 
@@ -117,6 +119,4 @@ public class FilmEntity {
     public void setLast_update(String last_update) {
         this.last_update = last_update;
     }
-
-    String last_update;
 }

@@ -180,7 +180,7 @@
         var prApi={};
         prApi.request=function () {
             var para = $("#"+tableInfo.formId).serialize();
-            para+="&start="+pageInfo.start+"&displayTotal="+pageInfo.displayTotal;
+            para+="&pageOffset="+pageInfo.start+"&pageSize="+pageInfo.displayTotal;
             Ajax[tableInfo.method](tableInfo.url,para,null,function (result) {
                 puApi.renderData(result);
             },function (e) {

@@ -1,8 +1,8 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.common.Page;
 import com.example.demo.mapper.FilmMapper;
 import com.example.demo.entity.FilmEntity;
+import com.example.demo.pagehelper.PageHelper;
 import com.example.demo.service.FilmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,8 +18,9 @@ public class FilmServiceImpl implements FilmService {
     private FilmMapper filmMapper;
 
     @Override
-    public Page<FilmEntity> pageListByQuery(FilmEntity film) {
-        Page<FilmEntity> page = filmMapper.pageListByQuery(film);
-        return page;
+    public List<FilmEntity> pageListByQuery(FilmEntity film, int pageOffset, int pageSize) {
+        PageHelper.startPage(pageOffset,pageSize);
+        List<FilmEntity> list = filmMapper.pageListByQuery(film);
+        return list;
     }
 }

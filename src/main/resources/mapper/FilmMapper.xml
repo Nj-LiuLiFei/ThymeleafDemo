@@ -6,12 +6,12 @@
     <select id="pageListByQuery" resultType="com.example.demo.entity.FilmEntity">
         SELECT * FROM film
         <where>
-            <if test="film_id != null">and film_id=#{film_id}</if>
-            <if test="rental_duration != 0">and rental_duration=#{rental_duration}</if>
-            <if test="rental_rate != null and rental_rate!=''">and rental_rate=#{rental_rate}</if>
-            <if test="length != 0">and length=#{length}</if>
-            <if test="replacement_cost != null and replacement_cost!=''">and replacement_cost=#{replacement_cost}</if>
-            <if test="rating != null and rating!=''">and rating=#{rating}</if>
+            <if test="film_id != null">AND film_id=#{film_id}</if>
+            <if test="rental_duration != null">AND rental_duration=#{rental_duration}</if>
+            <if test="rental_rate != null and rental_rate!=''">AND rental_rate=#{rental_rate}</if>
+            <if test="length != null">and length=#{length}</if>
+            <if test="replacement_cost != null and replacement_cost!=''">AND replacement_cost=#{replacement_cost}</if>
+            <if test="rating != null and rating!=''">AND rating=#{rating}</if>
         </where>
     </select>
 </mapper>
