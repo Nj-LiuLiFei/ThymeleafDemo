@@ -92,8 +92,7 @@
 <script>
     initDataTablePlugIn({
         "id":"dataTableDemo",
-        "formId":"filmForm",
-        "height":"350px",
+        /*"height":"350px",*/
         "column":[
             //{"data":"_DATA_TABLE_NUMBER","title":"序号","hide":true},
             {"data":"film_id","title":"film_id"},
@@ -113,9 +112,23 @@
         "fixedLeft":1,
         "fixedRight":1,
         "page":true,
+        "pagePlug":false,
         "url":"/film/pageListByQuery",
-        "queryParaCallBack":function () {
-
+        "setResponsePageInfo":function (result) {
+            return {
+                "total":result.pageTotal,
+                "list":result.list,
+            };
+        },
+        "queryParams":function () {
+            return {
+                "film_id":$("input[name=film_id]").val(),
+                "rental_duration":$("input[name=rental_duration]").val(),
+                "rental_rate":$("input[name=rental_rate]").val(),
+                "length":$("input[name=length]").val(),
+                "replacement_cost":$("input[name=replacement_cost]").val(),
+                "rating":$("input[name=rating]").val(),
+            };
         },
     });
     function  filmFormRestFn() {

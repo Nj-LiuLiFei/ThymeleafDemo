@@ -68,12 +68,14 @@ public class PageHelperInterceptor implements Interceptor {
             }
             //checkDialectExists();
             List resultList;
-            if(PageHelper.getLocalPage().isCount()){
-                MappedStatement countMs= MSUtil.newCountMappedStatement(ms,msId+"_COUNT");
-                Long count= ExecutorUtil.getCount(executor,countMs,parameter,resultHandler,boundSql);
+            long total=0;
+            MappedStatement countMs= MSUtil.newCountMappedStatement(ms,msId+"_COUNT");
+            total= ExecutorUtil.getCount(executor,countMs,parameter,resultHandler,boundSql);
+            if(total == 0){
+                return PageHelper.getPageInfo(total,new ArrayList());
             }
             resultList = ExecutorUtil.pageQuery(executor,ms, parameter, rowBounds, resultHandler, cacheKey, boundSql,PageHelper.getLocalPage());
-            return resultList;
+            return PageHelper.getPageInfo(total,resultList);
         }catch (SQLException e){
             return new ArrayList<>();
         }finally {

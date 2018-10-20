@@ -2,25 +2,25 @@ package com.example.demo.entity;
 
 
 public class FilmEntity {
-    Long film_id;
+    Integer film_id;
     String title;
     String description;
     String release_year;
-    Long  language_id;
-    Long original_language_id;
-    Long rental_duration;
+    Integer  language_id;
+    Integer original_language_id;
+    Integer rental_duration;
     String rental_rate;
-    Long length;
+    Integer length;
     String replacement_cost;
     String rating;
     String special_features;
     String last_update;
 
-    public Long getFilm_id() {
+    public Integer getFilm_id() {
         return film_id;
     }
 
-    public void setFilm_id(Long film_id) {
+    public void setFilm_id(Integer film_id) {
         this.film_id = film_id;
     }
 
@@ -48,27 +48,27 @@ public class FilmEntity {
         this.release_year = release_year;
     }
 
-    public Long getLanguage_id() {
+    public Integer getLanguage_id() {
         return language_id;
     }
 
-    public void setLanguage_id(Long language_id) {
+    public void setLanguage_id(Integer language_id) {
         this.language_id = language_id;
     }
 
-    public Long getOriginal_language_id() {
+    public Integer getOriginal_language_id() {
         return original_language_id;
     }
 
-    public void setOriginal_language_id(Long original_language_id) {
+    public void setOriginal_language_id(Integer original_language_id) {
         this.original_language_id = original_language_id;
     }
 
-    public Long getRental_duration() {
+    public Integer getRental_duration() {
         return rental_duration;
     }
 
-    public void setRental_duration(Long rental_duration) {
+    public void setRental_duration(Integer rental_duration) {
         this.rental_duration = rental_duration;
     }
 
@@ -80,11 +80,11 @@ public class FilmEntity {
         this.rental_rate = rental_rate;
     }
 
-    public Long getLength() {
+    public Integer getLength() {
         return length;
     }
 
-    public void setLength(Long length) {
+    public void setLength(Integer length) {
         this.length = length;
     }
 

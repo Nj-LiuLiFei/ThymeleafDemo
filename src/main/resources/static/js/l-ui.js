@@ -100,49 +100,79 @@
 /* 数据表格插件 */
 ;(function (window) {
     var Ajax={
-        "GET":function (url,para,type,_sFn,_eFn,_cFn) {
-            if(para!=undefined&&para!=null&&para!="") {
-                url = url + "?" + para;
-            }
+        "send":function (cof) {
+            var defaultOption={
+                "url":"",
+                "headers":{},
+                "type":"",
+                "data":"",
+                "contentType":"",
+                "_beforeSend":null,
+                "_sFn":null,
+                "_eFn":null,
+                "_cFn":null,
+            };
+            defaultOption = $.extend(defaultOption,cof);
             $.ajax({
-                url: url,
-                type: "GET",
-                contentType: "application/json",
-                success: function (data) {
-                    _sFn(data);
+                headers:defaultOption.headers,
+                url: defaultOption.url,
+                type: defaultOption.type,
+                data:defaultOption.data,
+                beforeSend:function(xhr){
+                    if(typeof defaultOption._beforeSend == "function"){
+                        defaultOption._beforeSend(xhr);
+                    }
+                },
+                success: function (s) {
+                    if(typeof defaultOption._cFn == "function"){
+                        defaultOption._sFn(s);
+                    }
                 },
                 error:function (e) {
-                    _eFn(e);
+                    if(typeof defaultOption._eFn == "function"){
+                        defaultOption._eFn(e);
+                    }
                 },
                 complete:function (c) {
-                  _cFn(c);
+                    if(typeof defaultOption._cFn == "function"){
+                        defaultOption._cFn(c);
+                    }
                 }
             });
         },
-        "POST":function (url,para,type,_sFn,_eFn,_cFn) {
-            $.ajax({
-                url: url,
-                type: "POST",
-                data:para,
-                contentType: "application/json",
-                success: function (data) {
-                    _sFn(data);
-                },
-                error:function (e) {
-                    _eFn(e);
-                },
-                complete:function (c) {
-                    _cFn(c);
-                }
+        "GET":function(url,beforeSend,_sFn,_eFn,_cFn){
+            this.send({
+                "url":url,
+                "type":"GET",
+                "_beforeSend":beforeSend,
+                "_sFn":_sFn,
+                "_eFn":_eFn,
+                "_cFn":_cFn,
             });
         },
+        "POST":function(url,para,beforeSend,_sFn,_eFn,_cFn){
+            this.send({
+                "url":url,
+                "type":"POST",
+                "data":para,
+                "_beforeSend":beforeSend,
+                "_sFn":_sFn,
+                "_eFn":_eFn,
+                "_cFn":_cFn,
+            });
+        },
+
     };
     function dataTable(cof) {
-        var tableElement=document.getElementById(cof.id);
-        if(tableElement == undefined||tableElement == null) {
+        var tE=$("#"+cof.id);
+        if(tE.length == 0) {
             console.error("找不到元素："+cof.id);
             return false;
         };
+        if(tE.length > 1){
+            console.error("元素的Id："+cof.id+"重复");
+            return false;
+        }
         if(!cof.url){
             console.error("请指定数据列表接口");
             return false;
@@ -151,43 +181,74 @@
             console.error("请补充数据列");
             return false;
         };
-        var statrtTime = new Date().getTime();
-        var tableInfo={
-            "id":cof.id,
-            "formId":cof.formId,
-            "node":"",
-            "thead":"",
-            "tbody":"",
-            "tfoot":"",
-            "column":cof.column,
-            "showColumn":0,
-            "data":"",
-            "url":cof.url,
-            "method":"GET",
-            "page":cof.page,
-        };
-        var tableNode = {
 
-        }
+        var defaultOption={
+            "id":null,
+            "height":null,
+            "column":null,
+            "fixedLeft":-1,
+            "fixedRight":-1,
+            "pagination": true, //是否显示分页
+            "pagePlug":false,
+            "pageSizeList": [10, 25, 50, 100],  //可供选择的每页的行数（*）
+            "sidePagination": "client",//分页方式：client客户端分页，server服务端分页
+            "sortable": true,       //是否启用排序
+            "url":null,
+            "method":"POST",
+            "queryParams":null,
+            "setResponsePageInfo":null,
+            "requestSuccessCallBack":null,
+            "requestErrorCallBack":null,
+            "requestCompleteCallBack":null,
+            "initComplete":null,
+        };
+
+        var statrtTime = new Date().getTime();
+        $.extend(defaultOption,cof);
+        cof=null;
+        var tableInfo={
+            "id":"#"+defaultOption.id,
+            "node":null,
+        };
         var pageInfo={
             "number":1,
-            "start":0,
-            "displayTotal":10,
+            "pageOffset":0,
+            "pageSize":10,
             "currentPage":0,
             "pages":0,
+            "data":[],
             "recordsTotal":0,
         };
+        tableInfo.node=renderTable.wrap(defaultOption.id,tableInfo.id,defaultOption.height),
+            renderTable.th(tableInfo.node,defaultOption.column);
+
         var prApi={};
         prApi.request=function () {
-            var para = $("#"+tableInfo.formId).serialize();
-            para+="&pageOffset="+pageInfo.start+"&pageSize="+pageInfo.displayTotal;
-            Ajax[tableInfo.method](tableInfo.url,para,null,function (result) {
-                puApi.renderData(result);
-            },function (e) {
-
-            },function (c) {
-
-            });
+            if(typeof defaultOption.queryParams == "function") {
+                var para = {};
+                if(typeof  defaultOption.queryParams == "function"){
+                    para = defaultOption.queryParams();
+                }
+                para = $.extend(para,{"pageOffset":pageInfo.pageOffset,"pageSize":pageInfo.pageSize});
+                Ajax[defaultOption.method](defaultOption.url,para,null,function (result) {
+                    if(typeof  defaultOption.requestSuccessCallBack == "function"){
+                        defaultOption.requestSuccessCallBack(result);
+                    }
+                    if(typeof  defaultOption.setResponsePageInfo == "function"){
+                        var pI = defaultOption.setResponsePageInfo(result);
+                        puApi.renderData(pI.list);
+                    }
+                    //puApi.renderData(result);
+                },function (e) {
+                    if(typeof  defaultOption.requestErrorCallBack == "function"){
+                        defaultOption.requestErrorCallBack(e);
+                    }
+                },function (c) {
+                    if(typeof  defaultOption.requestCompleteCallBack == "function"){
+                        defaultOption.requestCompleteCallBack(c);
+                    }
+                });
+            }
         };
         var puApi={};
         puApi.reload=function () {
@@ -196,44 +257,37 @@
         };
         puApi.renderData=function (data) {
             console.log(data);
-            tableInfo.tbody.innerHTML="";
-            var body = document.createDocumentFragment();
+            var e = tableInfo.node.find(tableInfo.id).find("tbody").html("");
+            var body = "";
             if(data.length > 0){
                 for (var i=0;i<data.length;i++){
-                    var tr=document.createElement("tr");
-                    for (var j=0;j<tableInfo.column.length;j++){
-                        var td=document.createElement("td");
-                        td.innerHTML=data[i][tableInfo.column[j].data];
-                        tr.appendChild(td);
+                    var tr="<tr>";
+                    for (var j=0;j<defaultOption.column.length;j++){
+                        tr=tr+"<td>"+data[i][defaultOption.column[j].data]+"</td>";
                     }
-                    body.appendChild(tr);
+                    tr=tr+"</tr>"
+                    body=body+tr;
                 }
-                tableInfo.tbody.appendChild(body);
+                e.html(body);
             }else {
-                tableInfo.tbody.innerHTML="<td colspan='"+tableInfo.showColumn+"'>没有结果列表</td>";
+                e.html("<td colspan='"+defaultOption.column.length+"'>没有数据</td>");
             }
-
-
-            dataTable_Api.draw(tableInfo.id);
+            dataTable_Api.draw(tableInfo.node);
         };
-        renderTable.wrap(tableElement,tableInfo.id,cof.height),
-            tableInfo.thead=document.getElementById(cof.id+"_dataTable_thead_table"),
-            tableInfo.node=document.getElementById(cof.id),
-            tableInfo.tbody=tableInfo.node.children[1];
-            tableInfo.showColumn=renderTable.th(tableInfo.thead,tableInfo.node,tableInfo.column);
-        window.addEventListener("resize",function (ev) {
-            dataTable_Api.draw(tableInfo.id);
-        });
-        tableInfo.node.parentNode.addEventListener("scroll",function (evt) {
+
+       /* window.addEventListener("resize",function (ev) {
+            dataTable_Api.draw(tableInfo.node);
+        });*/
+        /*tableInfo.node.parentNode.addEventListener("scroll",function (evt) {
             tableInfo.thead.style.marginLeft = -this.scrollLeft+"px";
-        });
-        console.log(cof.id+"数据表格树初始化："+(new Date().getTime()-statrtTime)+"ms");
-        cof=null;
+        });*/
         puApi.reload();
         this.Api=function () {
             return puApi;
         };
-        window[tableInfo.id+"Object"]=this;
+        window[defaultOption.id+"Object"]=this;
+        console.log(defaultOption.id+"数据表格树初始化："+(new Date().getTime()-statrtTime)+"ms");
+
     };
     var tp=dataTable.prototype;
     tp.bindEvent=function(id){
@@ -243,39 +297,51 @@
         return this.Api;
     };
     var renderTable={
-        "wrap":function (table,id,h) {
-            table.innerHTML="<thead><tr></tr></thead><tbody></tbody>",
-            table.parentNode.innerHTML="<div class='dataTable-wrap'>" +
-                "<div class='dataTable-thead'>" +
-                    "<table id="+id+"_dataTable_thead_table><thead><tr></tr></thead></table></div>" +
-                "<div class='dataTable-tbody' style='max-height: "+h+"'>"+table.outerHTML+"</div>" +
-                "<div class='dataTable-tfoot'></div>" +
-                "<div class='dataTable-tpage'></div>" +
-                "</div>";
+        "wrap":function (i,ic,h) {
+            var w = $(ic).parent().html(
+                "<div  id='"+i+"_wrap' class='dataTable-wrap'>" +
+                "<div class='dataTable-thead'><table><thead><tr></tr></thead></table></div>"+
+                "<div class='dataTable-tbody'><table id='"+i+"'><thead><tr></tr></thead><tbody></tbody></table></div>"+
+                "<div class='dataTable-tpage'></div>"+
+                "</div>");
+            if(h) {w.find("dataTable-tbody").css("height",h);}
+            return w.find("#"+i+"_wrap");
         },
-        "th":function (a,b,c) {
-            var th=a.children[0].children[0],tb=b.children[0].children[0],t=0;
-            for(var i=0;i<c.length;i++) {
-                var h=document.createElement("th"),h2=h.cloneNode(),div=document.createElement("div");
-                h.innerHTML=div.innerHTML=c[i].title;
-                h2.appendChild(div);
-                th.appendChild(h),tb.appendChild(h2);
-                t++;
+        "th":function (n,e) {
+            var a = n.find(".dataTable-thead thead tr"),b=n.find(".dataTable-tbody thead tr"),c="",d="";
+            for(var i=0;i<e.length;i++) {
+                c=c+"<th>"+e[i].title+"</th>";
+                d=d+"<th><div>"+e[i].title+"</div></th>";
             }
-            return t;
+            a.html(c),b.html(d);
         },
+        "page":function(){
+
+        }
     };
     var dataTable_Api={
-        "draw":function (id) {
-            if(id){
-                var table1=document.getElementById(id+"_dataTable_thead_table"),
-                    table2=document.getElementById(id),
-                    th=table1.children[0].children[0],
-                    th2=table2.children[0].children[0];
-                for(var i=0;i<th.childElementCount;i++){
-                    th.children[i].style.minWidth = th.children[i].style.maxWidth =window.getComputedStyle(th2.children[i],null).width;
+        "draw":function (n) {
+            if(n){
+                var t1 = n.find(".dataTable-thead thead tr th"),
+                    t2 = n.find(".dataTable-tbody tbody tr").eq(0).find("td"),t=0;
+                if(t2.length == 0){
+                    n.find(".dataTable-thead table").css("width","100%");
+                    t1.css({
+                        "width":"auto",
+                        "min-width":"",
+                        "max-width":"",
+                    });
                 }
-                table1.style.width = table2.offsetWidth+"px";
+                n.find(".dataTable-thead table").css("width",n.find(".dataTable-tbody table").outerWidth()+"px");
+                for(var i=0;i<t2.length;i++){
+                    t=window.getComputedStyle(t2[i],null).width;
+                    t1.eq(i).css({
+                        "min-width":t,
+                        "max-width":t,
+                    });
+                }
+
+
             }else {
 
             }

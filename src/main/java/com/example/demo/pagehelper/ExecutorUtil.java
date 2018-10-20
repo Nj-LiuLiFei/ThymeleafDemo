@@ -9,7 +9,6 @@ import org.apache.ibatis.session.RowBounds;
 
 import java.lang.reflect.Field;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +48,7 @@ public class ExecutorUtil {
     }
     public static <E> List<E> pageQuery(Executor executor, MappedStatement ms, Object parameter, RowBounds rowBounds,
                                         ResultHandler resultHandler, CacheKey cacheKey, BoundSql boundSql,
-                                        Page page) throws SQLException {
+                                        PageInfo page) throws SQLException {
         Map<String, Object> additionalParameters = getAdditionalParameter(boundSql);
         //生成分页的缓存 key
         //CacheKey pageKey = cacheKey;
